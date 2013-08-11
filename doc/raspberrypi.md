@@ -14,11 +14,11 @@
 
 ## Compiler
 ### gcc (Version 4.8)
-Install build-dependencies for *binutils* and *gcc*:
+#### Install build-dependencies for *binutils* and *gcc*
     # apt-get build-dep binutils
     # apt-get build-dep gcc-4.8
 
-Download the sources:
+#### Download the sources
     $ wget ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2
     $ wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.1/gcc-4.8.1.tar.bz2
     $ tar xjf binutils-2.23.52.tar.bz2
@@ -26,7 +26,7 @@ Download the sources:
     $ mkdir binutils-2.23.52/build
     $ mkdir gcc-4.8.1/build
 
-Build the toolchain:
+#### Build the toolchain
     $ export PREFIX=$HOME/bin/compiler
     $ cd binutils-2.23.52/build
     $ ../configure --prefix=$PREFIX --target=arm-none-eabi
