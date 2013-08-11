@@ -5,6 +5,7 @@
 ## Virtualization
 ### qemu
     git clone https://github.com/Torlus/qemu.git qemu-rpi
+    cd qemu-rpi
     mkdir build
     cd build
     ../configure --target-list=arm-softmmu --enable-sdl
