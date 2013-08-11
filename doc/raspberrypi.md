@@ -4,6 +4,7 @@
 
 ## Virtualization
 ### qemu
+    apt-get build-dep qemu
     git clone https://github.com/Torlus/qemu.git qemu-rpi
     cd qemu-rpi
     mkdir build
