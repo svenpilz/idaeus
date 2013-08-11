@@ -15,25 +15,25 @@
 ## Compiler
 ### gcc (Version 4.8)
 #### Install build-dependencies for *binutils* and *gcc*
-    # apt-get build-dep binutils
-    # apt-get build-dep gcc-4.8
+    apt-get build-dep binutils
+    apt-get build-dep gcc-4.8
 
 #### Download the sources
-    $ wget ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2
-    $ wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.1/gcc-4.8.1.tar.bz2
-    $ tar xjf binutils-2.23.52.tar.bz2
-    $ tar xjf gcc-4.8.1.tar.bz2
-    $ mkdir binutils-2.23.52/build
-    $ mkdir gcc-4.8.1/build
+    wget ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2
+    wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.1/gcc-4.8.1.tar.bz2
+    tar xjf binutils-2.23.52.tar.bz2
+    tar xjf gcc-4.8.1.tar.bz2
+    mkdir binutils-2.23.52/build
+    mkdir gcc-4.8.1/build
 
 #### Build the toolchain
-    $ export PREFIX=$HOME/bin/compiler
-    $ cd binutils-2.23.52/build
-    $ ../configure --prefix=$PREFIX --target=arm-none-eabi
-    $ make
-    $ make install
-    $ cd ../../gcc-4.8.1/build
-    $ PATH=$PATH:$PREFIX/bin ../configure --prefix=$PREFIX --target=arm-none-eabi --enable-interwork --enable-languages=c,c++ --without-headers
-    $ make all-gcc
-    $ make install-gcc
+    export PREFIX=$HOME/bin/compiler
+    cd binutils-2.23.52/build
+    ../configure --prefix=$PREFIX --target=arm-none-eabi
+    make
+    make install
+    cd ../../gcc-4.8.1/build
+    PATH=$PATH:$PREFIX/bin ../configure --prefix=$PREFIX --target=arm-none-eabi --enable-interwork --enable-languages=c,c++ --without-headers
+    make all-gcc
+    make install-gcc
 
