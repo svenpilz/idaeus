@@ -6,4 +6,5 @@
 
 ## Raspberry Pi
 * http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/
+* http://wiki.osdev.org/ARM_RaspberryPi_Tutorial_C
 

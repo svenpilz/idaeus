@@ -1,0 +1,11 @@
+# Raspberry Pi
+## Hardware
+* https://github.com/raspberrypi/linux/wiki/How-to-boot-using-device-tree
+
+## Virtualization
+### qemu
+    git clone https://github.com/Torlus/qemu.git qemu-rpi
+    mkdir build
+    cd build
+    ../configure --target-list=arm-softmmu --enable-sdl
+    make
