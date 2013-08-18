@@ -1,3 +1,5 @@
-void main(void) {
+#include <stdint.h>
 
+void main(void) {
+	
 }
