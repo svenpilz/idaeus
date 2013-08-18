@@ -32,7 +32,8 @@ qemu: $(BUILD)/kernel.elf
 	$(TOOLCHAIN)/qemu-system-arm -kernel $< -cpu arm1176 -m 256 -M raspi -serial stdio
 	
 qemu-debug: $(BUILD)/kernel.elf
-	$(TOOLCHAIN)/qemu-system-arm -s -kernel $< -cpu arm1176 -m 256 -M raspi -serial stdio
+	$(TOOLCHAIN)/qemu-system-arm -s -S -kernel $< -cpu arm1176 -m 256 -M raspi -serial stdio &
+	$(COMPILER_PREFIX)-gdb --command=gdbinit-qemu $(BUILD)/kernel.elf
 	
 clean:
 	rm -rf $(BUILD)
