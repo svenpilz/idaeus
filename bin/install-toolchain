@@ -1,0 +1,66 @@
+#!/bin/sh
+
+NPROCS=`grep -c ^processor /proc/cpuinfo`
+DOWNLOAD="wget -q"
+BUILD_DIR_TOOLCHAIN="build/toolchain"
+BIN_DIR_TOOLCHAIN="`pwd`/bin/toolchain"
+CROSS_GCC_VESION="4.8.1"
+CROSS_BINUTILS_VERSION="2.23.52"
+
+#
+# Clean and prepare.
+#
+rm -rf $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+mkdir -p $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+
+
+#
+# Download.
+#
+echo "Download toolchain ..."
+cd $BUILD_DIR_TOOLCHAIN
+$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
+$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
+
+unzip -qo rpi.zip
+tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
+
+
+#
+# Build and install QEMU.
+#
+echo "Build and install QEMU ..."
+mkdir qemu-rpi/build
+cd qemu-rpi/build
+../configure --prefix=$BIN_DIR_TOOLCHAIN --target-list=arm-softmmu --enable-sdl > /dev/null
+make -j$NPROCS > /dev/null
+make install > /dev/null
+cd ../..
+
+
+#
+# Build and install BINUTILS
+#
+echo "Build and install BINUTILS ..."
+mkdir binutils-$CROSS_BINUTILS_VERSION/build
+cd binutils-$CROSS_BINUTILS_VERSION/build
+../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi > /dev/null
+make -j$NPROCS > /dev/null
+make install > /dev/null
+cd ../..
+
+
+#
+# Build and install GCC
+#
+echo "Build and install GCC ..."
+mkdir gcc-$CROSS_GCC_VESION/build
+cd gcc-$CROSS_GCC_VESION/build
+export PATH=$PATH:$BIN_DIR_TOOLCHAIN/bin
+ ../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi --enable-interwork --enable-languages=c,c++ --without-headers > /dev/null
+make -j$NPROCS all-gcc > /dev/null
+make install-gcc > /dev/null
+cd ../..
+
