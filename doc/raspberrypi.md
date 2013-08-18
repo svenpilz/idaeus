@@ -14,9 +14,10 @@
 
 ## Compiler
 ### gcc (Version 4.8)
-#### Install build-dependencies for *binutils* and *gcc*
+#### Install build-dependencies and additional libraries
     apt-get build-dep binutils
-    apt-get build-dep gcc-4.8
+    apt-get build-dep gcc
+    apt-get install libgmp-dev libmpfr-dev libmpc-dev libc6-dev
 
 #### Download the sources
     wget ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2
