@@ -1,7 +1,15 @@
 #!/bin/sh
 
 cd src/lib/c
+make clean
 make
 cd ../..
+
 cd kernel
+make clean
+
+cd driver/bcm2835
+make
+
+cd ../..
 make

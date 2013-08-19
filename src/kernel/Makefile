@@ -17,8 +17,8 @@ $(BUILD)/kernel.img.asm: $(BUILD)/kernel.img
 $(BUILD)/kernel.listing: $(BUILD)/kernel.elf
 	$(COMPILER_PREFIX)-objdump -d $< > $(BUILD)/kernel.listing
 
-$(BUILD)/kernel.elf: $(BUILD) Makefile kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835/gpio $(BUILD)/driver/bcm2835/gpio/gpio.o $(BUILD)/driver/bcm2835/uart $(BUILD)/driver/bcm2835/uart/uart.o 
-	$(LINK) -o $(BUILD)/kernel.elf -T kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835/gpio/gpio.o $(BUILD)/driver/bcm2835/uart/uart.o $(BUILD_PREFIX)/lib/c.o
+$(BUILD)/kernel.elf: $(BUILD) Makefile kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o
+	$(LINK) -o $(BUILD)/kernel.elf -T kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835.o $(BUILD_PREFIX)/lib/c.o
 	
 $(BUILD)/%.o: %.s
 	$(CC) -o $@ $<
