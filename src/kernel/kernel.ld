@@ -3,14 +3,12 @@ SECTIONS {
 	 * Raspberry Pi bootloader executes at 0x8000.
 	 */
 	. = 0x8000;
-	.text.bootstrap : {
-		*(.text.bootstrap)
-	}
 	
-	/*
-	 * C code
-	 */
 	.text : {
+		/*
+		 * First the bootstrap code.
+		 */
+		*(.text.bootstrap)
 		*(.text)
 	}
 
