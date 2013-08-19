@@ -4,5 +4,5 @@
 void main(void) {
 	uart_init();
 	libc_init_putc(uart_putc);
-	putc('H');
+	puts("Hello World!");
 }

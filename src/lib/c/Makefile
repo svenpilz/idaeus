@@ -5,8 +5,8 @@ PACK = $(COMPILER_PREFIX)-ar rs
 BUILD_PREFIX = ../../../build/idaeus/lib
 BUILD = $(BUILD_PREFIX)/c
 
-all: libc
-libc: $(BUILD)/delay.o $(BUILD)/putc.o
+all: $(BUILD) libc
+libc: $(BUILD)/delay.o $(BUILD)/putc.o $(BUILD)/puts.o
 	$(PACK) $(BUILD_PREFIX)/c.o $^
 	
 $(BUILD)/%.o: %.c
