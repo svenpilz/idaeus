@@ -6,7 +6,6 @@ BUILD_PREFIX = ../../build/idaeus
 BUILD = $(BUILD_PREFIX)/kernel
 
 all: kernel
-
 kernel: $(BUILD)/kernel.img $(BUILD)/kernel.img.asm $(BUILD)/kernel.listing
 
 $(BUILD)/kernel.img: $(BUILD)/kernel.elf
@@ -31,10 +30,10 @@ $(BUILD):
 	mkdir -p $@
 	
 qemu: kernel
-	$(TOOLCHAIN)/qemu-system-arm -kernel $< -cpu arm1176 -m 256 -M raspi -serial stdio
+	$(TOOLCHAIN)/qemu-system-arm -kernel $(BUILD)/kernel.elf -cpu arm1176 -m 256 -M raspi -serial stdio
 	
 qemu-debug: kernel
-	$(TOOLCHAIN)/qemu-system-arm -s -S -kernel $< -cpu arm1176 -m 256 -M raspi -serial stdio &
+	$(TOOLCHAIN)/qemu-system-arm -s -S -kernel $(BUILD)/kernel.elf -cpu arm1176 -m 256 -M raspi -serial stdio &
 	$(COMPILER_PREFIX)-gdb --command=gdbinit-qemu $(BUILD)/kernel.elf
 	
 clean:
