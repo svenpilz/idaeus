@@ -12,8 +12,8 @@ CROSS_GDB_VERSION="7.6"
 #
 # Clean and prepare.
 #
-#rm -rf $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
-#mkdir -p $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+rm -rf $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+mkdir -p $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
 
 
 #
@@ -21,15 +21,15 @@ CROSS_GDB_VERSION="7.6"
 #
 echo "Download toolchain ..."
 cd $BUILD_DIR_TOOLCHAIN
-#$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
-#$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
-#$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
-#$DOWNLOAD http://ftp.gnu.org/gnu/gdb/gdb-$CROSS_GDB_VERSION.tar.gz
+$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
+$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
+$DOWNLOAD http://ftp.gnu.org/gnu/gdb/gdb-$CROSS_GDB_VERSION.tar.gz
 
-#unzip -qo rpi.zip
-#tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
-#tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
-#tar xzf gdb-$CROSS_GDB_VERSION.tar.gz
+unzip -qo rpi.zip
+tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
+tar xzf gdb-$CROSS_GDB_VERSION.tar.gz
 
 
 #
