@@ -2,7 +2,27 @@
 #include "driver/bcm2835/uart/uart.h"
 #include "driver/bcm2835/framebuffer/framebuffer.h"
 
+void intall_interrupt_handler(uint8_t interrupt, void* handler) {
+	/*
+	 * Opcode: 0xEA (Branch, no link, always) and
+	 *         relative branch address.
+	 */
+	handler = ((int32_t)handler - interrupt - 8) >> 2;
+	*((uint32_t*)interrupt) = 0xEA000000 + handler;
+}
 
+void __attribute__ ((interrupt ("SWI"))) swi(void) {
+	uint32_t syscall_id;
+	
+	/*
+	 * Read “comment” section of SWI instruction, this is
+	 * used as the syscall id.
+	 */
+	asm volatile ("ldr %0, [lr,#-4]" : "=r" (syscall_id));
+	syscall_id &= 0x00FFFFFF;
+	
+	puts("swi-handler");
+}
 
 void main(void) {
 	uart_init();
@@ -22,5 +42,13 @@ void main(void) {
 		}
 	}
 	
+	puts("swi-setup");
+	intall_interrupt_handler(0x8, swi);
+	
+	
+	puts("swi");
+	asm("swi 1");
+	
 	puts("terminate");
 }
+
