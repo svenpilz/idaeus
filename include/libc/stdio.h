@@ -3,5 +3,6 @@
 
 #include "../../src/lib/c/putc.h"
 #include "../../src/lib/c/puts.h"
+#include "../../src/lib/c/printf.h"
 
 #endif

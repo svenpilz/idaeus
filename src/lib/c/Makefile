@@ -6,7 +6,7 @@ BUILD_PREFIX = ../../../build/idaeus/lib
 BUILD = $(BUILD_PREFIX)/c
 
 all: $(BUILD) libc
-libc: $(BUILD)/delay.o $(BUILD)/putc.o $(BUILD)/puts.o
+libc: $(BUILD)/delay.o $(BUILD)/putc.o $(BUILD)/puts.o $(BUILD)/printf.o
 	$(PACK) $(BUILD_PREFIX)/c.o $^
 	
 $(BUILD)/%.o: %.c
