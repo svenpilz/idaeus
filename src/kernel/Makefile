@@ -1,6 +1,6 @@
 TOOLCHAIN = ../../bin/toolchain/bin
 COMPILER_PREFIX = $(TOOLCHAIN)/arm-none-eabi
-CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -I ../../include/libc -g -c
+CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -mcpu=arm1176jzf-s -I ../../include/libc -g -c
 LINK = $(COMPILER_PREFIX)-ld
 BUILD_PREFIX = ../../build/idaeus
 BUILD = $(BUILD_PREFIX)/kernel
