@@ -9,36 +9,41 @@ CROSS_GCC_VESION="4.8.1"
 CROSS_BINUTILS_VERSION="2.23.52"
 CROSS_GDB_VERSION="7.6"
 
-#
-# Clean and prepare.
-#
-rm -rf $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
-mkdir -p $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+if [ "$1" = "clean" -o ! -d "$BUILD_DIR_TOOLCHAIN" ]; then
+	#
+	# Clean and prepare.
+	#
+	rm -rf $BUILD_DIR_TOOLCHAIN $BIN_DIR_TOOLCHAIN
+	mkdir -p $BUILD_DIR_TOOLCHAIN
 
 
-#
-# Download.
-#
-echo "Download toolchain ..."
-cd $BUILD_DIR_TOOLCHAIN
-$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
-$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
-$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
-$DOWNLOAD http://ftp.gnu.org/gnu/gdb/gdb-$CROSS_GDB_VERSION.tar.gz
+	#
+	# Download.
+	#
+	echo "Download toolchain ..."
+	cd $BUILD_DIR_TOOLCHAIN
+	$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
+	$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+	$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
+	$DOWNLOAD http://ftp.gnu.org/gnu/gdb/gdb-$CROSS_GDB_VERSION.tar.gz
 
-unzip -qo rpi.zip
-tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
-tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
-tar xzf gdb-$CROSS_GDB_VERSION.tar.gz
+	unzip -qo rpi.zip
+	tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
+	tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
+	tar xzf gdb-$CROSS_GDB_VERSION.tar.gz
+else
+	cd $BUILD_DIR_TOOLCHAIN
+fi
 
+mkdir -p $BIN_DIR_TOOLCHAIN
 
 #
 # Build and install QEMU.
 #
 echo "Build and install QEMU ..."
-mkdir qemu-rpi/build
+mkdir -p qemu-rpi/build
 cd qemu-rpi/build
-../configure --prefix=$BIN_DIR_TOOLCHAIN --target-list=arm-softmmu --enable-sdl > /dev/null
+../configure --prefix=$BIN_DIR_TOOLCHAIN --target-list=arm-softmmu --enable-debug --enable-sdl > /dev/null
 make -j$NPROCS > /dev/null
 make install > /dev/null
 cd ../..
@@ -48,9 +53,9 @@ cd ../..
 # Build and install BINUTILS
 #
 echo "Build and install BINUTILS ..."
-mkdir binutils-$CROSS_BINUTILS_VERSION/build
+mkdir -p binutils-$CROSS_BINUTILS_VERSION/build
 cd binutils-$CROSS_BINUTILS_VERSION/build
-../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi > /dev/null
+../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi --disable-nls --with-float=hard --with-fpu=vfp --enable-interwork > /dev/null
 make -j$NPROCS > /dev/null
 make install > /dev/null
 cd ../..
@@ -60,10 +65,10 @@ cd ../..
 # Build and install GCC
 #
 echo "Build and install GCC ..."
-mkdir gcc-$CROSS_GCC_VESION/build
+mkdir -p gcc-$CROSS_GCC_VESION/build
 cd gcc-$CROSS_GCC_VESION/build
 export PATH=$PATH:$BIN_DIR_TOOLCHAIN/bin
- ../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi --enable-interwork --enable-languages=c,c++ --without-headers > /dev/null
+ ../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi --disable-nls --with-float=hard --with-fpu=vfp --enable-interwork --enable-languages=c,c++ --without-headers > /dev/null
 make -j$NPROCS all-gcc > /dev/null
 make install-gcc > /dev/null
 cd ../..
@@ -73,7 +78,7 @@ cd ../..
 # Build and install GDB
 #
 echo "Build and install GDB ..."
-mkdir gdb-$CROSS_GDB_VERSION/build
+mkdir -p gdb-$CROSS_GDB_VERSION/build
 cd gdb-$CROSS_GDB_VERSION/build
  ../configure --prefix=$BIN_DIR_TOOLCHAIN --target=arm-none-eabi > /dev/null
 make -j$NPROCS > /dev/null
