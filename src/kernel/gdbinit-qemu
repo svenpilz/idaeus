@@ -1,1 +1,7 @@
 target remote localhost:1234
+break *0x0
+break *0x4
+break *0x8
+break *0xc
+break *0x10
+break *0x14
