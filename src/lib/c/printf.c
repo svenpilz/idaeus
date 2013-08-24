@@ -24,6 +24,35 @@ void print_decimal_uint(unsigned int num) {
 	}
 }
 
+void print_decimal_int(int num) {
+	if (num < 0) {
+		putc('-');
+		num *= -1;
+	}
+	
+	print_decimal_uint(num);
+}
+
+/**
+ * todo: This is probably the worst way of converting double to string
+ *       and was written just as a test for the FPU support of the
+ *       compiler. IEEE-754 anybody?
+ */
+void print_floating_point(double num) {
+	print_decimal_int((int)num);
+	putc('.');
+	
+	num -= (int)num;
+	if (num < 0) {
+		num *= -1;
+	}
+	while (num > 0) {
+		num *= 10;
+		putc((int)num + '0');
+		num -= (int)num;
+	}
+}
+
 int printf(const char* format, ...) {
 	format_status_t status = TEXT;
 	va_list variables;
@@ -35,6 +64,10 @@ int printf(const char* format, ...) {
 				switch (*format) {
 					case 'u':
 						print_decimal_uint(va_arg(variables, unsigned int));
+						status = TEXT;
+						break;
+					case 'f':
+						print_floating_point(va_arg(variables, double));
 						status = TEXT;
 						break;
 					default:
