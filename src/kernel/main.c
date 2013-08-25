@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "driver/bcm2835/uart/uart.h"
 #include "driver/bcm2835/framebuffer/framebuffer.h"
+#include <assert.h>
 
 void intall_interrupt_handler(uint8_t interrupt, void* handler) {
 	/*
@@ -69,6 +70,7 @@ void main(void) {
 	platform_init();
 	uart_init();
 	libc_init_putc(uart_putc);
+	
 	puts("framebuffer init");
 	frame_buffer_info_t frame_buffer_info;
 	framebuffer_init(&frame_buffer_info, 1024, 768, 16);
@@ -94,6 +96,7 @@ void main(void) {
 	
 	// FPU test.
 	printf("Float: %f\n", -25.85);
+	printf("0x%x 0x%X\n", 0xABC, 0xDEF);
 	
 	puts("swi");
 	asm("swi 1");	
