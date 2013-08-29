@@ -1,6 +1,6 @@
 TOOLCHAIN = ../../../../bin/toolchain/bin
 COMPILER_PREFIX = $(TOOLCHAIN)/arm-none-eabi
-CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -I ../../../../include/libc -g -c
+CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -fno-builtin -o2 -I ../../../../include/libc -g -c
 PACK = $(COMPILER_PREFIX)-ar rs
 BUILD_PREFIX = ../../../../build/idaeus/kernel/driver
 BUILD = $(BUILD_PREFIX)/bcm2835
