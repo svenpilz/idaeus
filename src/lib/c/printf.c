@@ -43,7 +43,7 @@ void print_int(int num, uint8_t base, const char* digits) {
  *       and was written just as a test for the FPU support of the
  *       compiler. IEEE-754 anybody?
  */
-void print_floating_point(double num, uint8_t base, const char* digits) {
+void print_floating_point(double num, uint8_t base, const char* digits, unsigned int precision) {
 	print_int((int)num, base, digits);
 	putc('.');
 	
@@ -51,10 +51,11 @@ void print_floating_point(double num, uint8_t base, const char* digits) {
 	if (num < 0) {
 		num *= -1;
 	}
-	while (num > 0) {
+	while (num > 0 && precision > 0) {
 		num *= 10;
 		putc(digits[(int)num]); 
 		num -= (int)num;
+		--precision;
 	}
 }
 
@@ -87,7 +88,7 @@ int printf(const char* format, ...) {
 						print_uint(va_arg(variables, unsigned int), 16, digits_upper_case);
 						break;
 					case 'f':
-						print_floating_point(va_arg(variables, double), 10, digits_lower_case);
+						print_floating_point(va_arg(variables, double), 10, digits_lower_case, 6);
 						break;
 					case 's':
 						print_string(va_arg(variables, const char*));
