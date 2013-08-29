@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "driver/bcm2835/uart/uart.h"
 #include "driver/bcm2835/framebuffer/framebuffer.h"
-#include <assert.h>
+#include <math.h>
 
 void intall_interrupt_handler(uint8_t interrupt, void* handler) {
 	/*
@@ -96,7 +96,10 @@ void main(void) {
 	
 	// FPU test.
 	printf("Float: %f\n", -25.85);
-	printf("0x%x 0x%X\n", 0xABC, 0xDEF);
+	//printf("%u, 0x%x 0x%X\n", 123, 0xABC, 0xDEF);
+	printf("%f %f\n", sin(0), sin(3.14159/2));
+	printf("%f %f\n", sin(3.14159*2), sin(3.14159));
+	//printf("Float: %f\n", -25.85);
 	
 	puts("swi");
 	asm("swi 1");	
