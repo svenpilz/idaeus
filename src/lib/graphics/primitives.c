@@ -8,7 +8,7 @@
  * @return Pointer to the first (color-) component of the pixel.
  */
 uint8_t* kernel_framebuffer_pixel(kernel_framebuffer_t* fb, uint32_t u, uint32_t v) {
-	return fb->frame + (u * fb->width * (fb->depth/8) + v * (fb->depth/8));
+	return fb->frame + (v * fb->width * (fb->depth/8) + u * (fb->depth/8));
 }
 
 void graphics_fb_draw_line(kernel_framebuffer_t* fb, color_t c,
@@ -47,4 +47,17 @@ void graphics_fb_draw_point(kernel_framebuffer_t* fb, color_t c, uint x, uint y)
 	*p++ = graphics_color_red(c);
 	*p++ = graphics_color_green(c);
 	*p++ = graphics_color_blue(c);
+}
+
+void graphics_fb_fill_rectangle(kernel_framebuffer_t* fb, color_t c,
+	uint start_x, uint start_y, uint end_x, uint end_y) {
+	
+	for (uint y = start_y; y <= end_y; ++y) {
+		uint8_t* p = kernel_framebuffer_pixel(fb, start_x, y);
+		for (uint x = start_x; x <= end_x; ++x) {
+			*p++ = graphics_color_red(c);
+			*p++ = graphics_color_green(c);
+			*p++ = graphics_color_blue(c);
+		}
+	}
 }

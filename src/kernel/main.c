@@ -85,23 +85,12 @@ void main(void) {
 	fb.height = 768;
 	fb.depth = 24;
 	
-	
-	uint8_t* img = fb.frame;
-	
-	for (uint32_t row = 0; row < fb.height; row++) {
-		for (uint32_t col = 0; col < fb.width; col++) {
-			*img++ = graphics_color_red(GRAPHICS_COLOR_RED);
-			*img++ = graphics_color_green(GRAPHICS_COLOR_RED);
-			*img++ = graphics_color_blue(GRAPHICS_COLOR_RED);
-		}
-	}
-	
-	bcm2835_framebuffer_draw(&fb);
+	puts("render");
+	graphics_fb_fill_rectangle(&fb, GRAPHICS_COLOR_RED, 0, 0, fb.width-1, fb.height-1);
+	graphics_fb_draw_point(&fb, GRAPHICS_COLOR_GREEN, 10, 10);
+	graphics_fb_draw_line(&fb, graphics_color_set_blue(GRAPHICS_COLOR_GREEN, 255), 15, 15, 160, 100);
 	
 	puts("draw");
-	graphics_fb_draw_point(&fb, GRAPHICS_COLOR_GREEN, 10, 10);
-	printf("%u\n", graphics_color_blue(graphics_color_set_blue(GRAPHICS_COLOR_GREEN, 255)));
-	graphics_fb_draw_line(&fb, graphics_color_set_blue(GRAPHICS_COLOR_GREEN, 255), 15, 15, 160, 100);
 	bcm2835_framebuffer_draw(&fb);
 	
 	puts("swi-setup");
