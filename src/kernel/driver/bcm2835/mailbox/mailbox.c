@@ -30,7 +30,7 @@ void mailbox_write(uint8_t mailbox, void* mail) {
 		puts("[ERROR] mailbox_write: mailbox > 15.");
 		return;
 	}
-	puts("write");
+	
 	uint32_t* write = (uint32_t*)MAILBOX_WRITE_ADDRESS;
 	uint32_t* status = (uint32_t*)MAILBOX_STATUS_ADDRESS;
 	mail += 0x40000000 + mailbox;
