@@ -1,17 +1,16 @@
 #!/bin/sh
 
+rm -rf build/idaeus
+
 cd src/lib/c
-make clean
 make
 cd ../
 
 cd graphics
-make clean
 make
 cd ../..
 
 cd kernel
-make clean
 
 cd driver/bcm2835
 make
