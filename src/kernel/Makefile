@@ -1,6 +1,6 @@
 TOOLCHAIN = ../../bin/toolchain/bin
 COMPILER_PREFIX = $(TOOLCHAIN)/arm-none-eabi
-CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -fno-builtin  -o2 -mcpu=arm1176jzf-s -I ../../include/libc -g -c
+CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -fno-builtin  -o2 -mcpu=arm1176jzf-s -I ../../include/libc -I ../../include/graphics -g -c
 LINK = $(COMPILER_PREFIX)-ld
 BUILD_PREFIX = ../../build/idaeus
 BUILD = $(BUILD_PREFIX)/kernel
@@ -18,7 +18,7 @@ $(BUILD)/kernel.listing: $(BUILD)/kernel.elf
 	$(COMPILER_PREFIX)-objdump -d $< > $(BUILD)/kernel.listing
 
 $(BUILD)/kernel.elf: $(BUILD) Makefile kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o
-	$(LINK) -o $(BUILD)/kernel.elf -T kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835.o $(BUILD_PREFIX)/lib/c.o
+	$(LINK) -o $(BUILD)/kernel.elf -T kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835.o $(BUILD_PREFIX)/lib/c.o $(BUILD_PREFIX)/lib/graphics.o
 	
 $(BUILD)/%.o: %.s
 	$(CC) -o $@ $<

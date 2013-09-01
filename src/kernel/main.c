@@ -4,6 +4,7 @@
 #include "interfaces/framebuffer.h"
 #include <math.h>
 
+#include <primitives.h>
 
 
 uint8_t buffer[1024*768*3];
@@ -97,7 +98,10 @@ void main(void) {
 	
 	bcm2835_framebuffer_draw(&fb);
 	
-	
+	puts("draw");
+	graphics_fb_point(&fb, 10, 10);
+	graphics_fb_draw_line(&fb, 15, 15, 160, 100);
+	bcm2835_framebuffer_draw(&fb);
 	
 	puts("swi-setup");
 	intall_interrupt_handler(0x0, interrupt);
