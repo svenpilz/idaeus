@@ -2,6 +2,7 @@
 #define KERNEL_DRIVER_BCM2835_FRAMEBUFFER_FRAMEBUFFER_H
 
 #include <stdint.h>
+#include "../../../interfaces/framebuffer.h"
 
 typedef struct {
 	uint32_t physical_width;
@@ -14,8 +15,9 @@ typedef struct {
 	uint32_t y;
 	uint32_t gpu_pointer;
 	uint32_t gpu_size;
-} __attribute__((packed)) frame_buffer_info_t;
+} __attribute__((packed)) bcm2835_framebuffer_info_t;
 
-int framebuffer_init(frame_buffer_info_t* frame_buffer_info, uint32_t width, uint32_t height, uint32_t depth);
+int bcm2835_framebuffer_init(uint32_t width, uint32_t height, uint32_t depth);
+int bcm2835_framebuffer_draw(const kernel_framebuffer_t* image);
 
 #endif

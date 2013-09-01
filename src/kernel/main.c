@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include "driver/bcm2835/uart/uart.h"
 #include "driver/bcm2835/framebuffer/framebuffer.h"
+#include "interfaces/framebuffer.h"
 #include <math.h>
 
+
+
+uint8_t buffer[1024*768*3];
 void intall_interrupt_handler(uint8_t interrupt, void* handler) {
 	/*
 	 * Opcode: 0xEA (Branch, no link, always) and
@@ -72,19 +76,28 @@ void main(void) {
 	libc_init_putc(uart_putc);
 	
 	puts("framebuffer init");
-	frame_buffer_info_t frame_buffer_info;
-	framebuffer_init(&frame_buffer_info, 1024, 768, 16);
-	puts("draw");
+	bcm2835_framebuffer_init(1024, 768, 24);
 	
-	uint16_t* img = frame_buffer_info.gpu_pointer;
-	uint16_t color = 0;
+	kernel_framebuffer_t fb;
+	fb.frame = buffer;
+	fb.width = 1024;
+	fb.height = 768;
+	fb.depth = 24;
 	
-	for (uint32_t x = 0; x < frame_buffer_info.physical_width; x++) {
-		for (uint32_t y = 0; y < frame_buffer_info.physical_height; y++) {
-			*img = color++;
-			img += 2;
+	
+	uint8_t* img = fb.frame;
+	
+	for (uint32_t row = 0; row < fb.height; row++) {
+		for (uint32_t col = 0; col < fb.width; col++) {
+			*img++ = 255;
+			*img++ = 0;
+			*img++ = 0;
 		}
 	}
+	
+	bcm2835_framebuffer_draw(&fb);
+	
+	
 	
 	puts("swi-setup");
 	intall_interrupt_handler(0x0, interrupt);
