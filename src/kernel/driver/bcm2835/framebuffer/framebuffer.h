@@ -2,7 +2,7 @@
 #define KERNEL_DRIVER_BCM2835_FRAMEBUFFER_FRAMEBUFFER_H
 
 #include <stdint.h>
-#include "../../../interfaces/framebuffer.h"
+#include <kernel/interfaces/framebuffer.h>
 
 typedef struct {
 	uint32_t physical_width;

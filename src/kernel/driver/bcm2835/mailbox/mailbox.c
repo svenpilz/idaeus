@@ -39,7 +39,7 @@ void mailbox_write(uint8_t mailbox, void* mail) {
 	
 	}
 	
-	*write = mail;
+	*write = (uint32_t)mail;
 	
 }
 

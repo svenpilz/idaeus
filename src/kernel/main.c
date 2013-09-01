@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "driver/bcm2835/uart/uart.h"
 #include "driver/bcm2835/framebuffer/framebuffer.h"
-#include "interfaces/framebuffer.h"
+#include <kernel/interfaces/framebuffer.h>
 #include <math.h>
 
-#include <primitives.h>
+#include <graphics/primitives.h>
 
 
 uint8_t buffer[1024*768*3];
@@ -90,17 +90,18 @@ void main(void) {
 	
 	for (uint32_t row = 0; row < fb.height; row++) {
 		for (uint32_t col = 0; col < fb.width; col++) {
-			*img++ = 255;
-			*img++ = 0;
-			*img++ = 0;
+			*img++ = graphics_color_red(GRAPHICS_COLOR_RED);
+			*img++ = graphics_color_green(GRAPHICS_COLOR_RED);
+			*img++ = graphics_color_blue(GRAPHICS_COLOR_RED);
 		}
 	}
 	
 	bcm2835_framebuffer_draw(&fb);
 	
 	puts("draw");
-	graphics_fb_point(&fb, 10, 10);
-	graphics_fb_draw_line(&fb, 15, 15, 160, 100);
+	graphics_fb_draw_point(&fb, GRAPHICS_COLOR_GREEN, 10, 10);
+	printf("%u\n", graphics_color_blue(graphics_color_set_blue(GRAPHICS_COLOR_GREEN, 255)));
+	graphics_fb_draw_line(&fb, graphics_color_set_blue(GRAPHICS_COLOR_GREEN, 255), 15, 15, 160, 100);
 	bcm2835_framebuffer_draw(&fb);
 	
 	puts("swi-setup");

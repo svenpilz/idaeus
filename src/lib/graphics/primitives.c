@@ -1,4 +1,4 @@
-#include <primitives.h>
+#include <graphics/primitives.h>
 #include <stdio.h>
 
 /**
@@ -11,7 +11,8 @@ uint8_t* kernel_framebuffer_pixel(kernel_framebuffer_t* fb, uint32_t u, uint32_t
 	return fb->frame + (u * fb->width * (fb->depth/8) + v * (fb->depth/8));
 }
 
-void graphics_fb_draw_line(kernel_framebuffer_t* fb, uint start_x, uint start_y, uint end_x, uint end_y) {
+void graphics_fb_draw_line(kernel_framebuffer_t* fb, color_t c,
+	uint start_x, uint start_y, uint end_x, uint end_y) {
 	int diff_x = end_x - start_x;
 	int diff_y = end_y - start_y;
 	int offset_x = diff_x < 0 ? -1 : 1;
@@ -27,9 +28,9 @@ void graphics_fb_draw_line(kernel_framebuffer_t* fb, uint start_x, uint start_y,
 	
 	while (x != end_x + offset_x) {
 		uint8_t* p = kernel_framebuffer_pixel(fb, x, y);
-		*p++ = 0;
-		*p++ = 255;
-		*p++ = 0;
+		*p++ = graphics_color_red(c);
+		*p++ = graphics_color_green(c);
+		*p++ = graphics_color_blue(c);
 		
 		x += offset_x;
 		error += delta_error;
@@ -41,9 +42,9 @@ void graphics_fb_draw_line(kernel_framebuffer_t* fb, uint start_x, uint start_y,
 	}
 }
 
-void graphics_fb_point(kernel_framebuffer_t* fb, uint x, uint y) {
+void graphics_fb_draw_point(kernel_framebuffer_t* fb, color_t c, uint x, uint y) {
 	uint8_t* p = kernel_framebuffer_pixel(fb, x, y);
-		*p++ = 0;
-		*p++ = 255;
-		*p++ = 0;
+	*p++ = graphics_color_red(c);
+	*p++ = graphics_color_green(c);
+	*p++ = graphics_color_blue(c);
 }
