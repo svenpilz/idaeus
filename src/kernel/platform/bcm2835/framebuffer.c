@@ -1,5 +1,5 @@
 #include "framebuffer.h"
-#include "../mailbox/mailbox.h"
+#include "mailbox.h"
 #include <stdio.h>
 #include <assert.h>
 
@@ -35,14 +35,14 @@ int bcm2835_framebuffer_init(uint32_t width, uint32_t height, uint32_t depth) {
 		puts("[ERORR] bcm2835_framebuffer_init: framebuffer at 0x0? Something is wrong here!");
 		return -3;
 	}
-	/*
+	
 	printf("bcm2835 framebuffer: %ux%u (pixel depth=%u) at 0x%x (size=%u bytes).\n",
 		hardware_framebuffer.physical_width,
 		hardware_framebuffer.physical_height,
 		hardware_framebuffer.bit_depth,
 		hardware_framebuffer.gpu_pointer,
 		hardware_framebuffer.gpu_size);
-	*/
+	
 	return 0;
 }
 

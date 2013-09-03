@@ -1,0 +1,6 @@
+#ifndef INCLUDE_KERNEL_INTERFACES_PLATFORM_h
+#define INCLUDE_KERNEL_INTERFACES_PLATFORM_h
+
+int platform_init();
+
+#endif

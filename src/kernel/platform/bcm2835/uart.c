@@ -1,5 +1,5 @@
 #include "uart.h"
-#include "../gpio/gpio.h"
+#include "gpio.h"
 
 /*
  * ## UART Assignment on the GPIO Pin map

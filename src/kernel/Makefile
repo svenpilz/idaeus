@@ -1,46 +1,36 @@
-TOOLCHAIN = ../../bin/toolchain/bin
-COMPILER_PREFIX = $(TOOLCHAIN)/arm-none-eabi
-CC = $(COMPILER_PREFIX)-gcc --std=gnu11 -fno-builtin  -o2 -mcpu=arm1176jzf-s -I ../../include/libc -I ../../include -g -c
-LINK = $(COMPILER_PREFIX)-ld
-BUILD_PREFIX = ../../build/idaeus
-BUILD = $(BUILD_PREFIX)/kernel
+BASE = ../..
+NAME = kernel
+COMPILATION_UNITS = main
+LIBS = c graphics
+DEPENDENCY = arch/arm platform/bcm2835
+include $(BASE)/configuration-executable.mk
 
-all: kernel
-kernel: $(BUILD)/kernel.img $(BUILD)/kernel.img.asm $(BUILD)/kernel.listing
+ELF = $(BUILDPATH)/kernel.elf
+ELF_LISTING = $(BUILDPATH)/kernel.elf.listing
+IMG_LISTING = $(BUILDPATH)/kernel.img.listing
 
-$(BUILD)/kernel.img: $(BUILD)/kernel.elf
-	$(COMPILER_PREFIX)-objcopy $< -O binary $@
-	
-$(BUILD)/kernel.img.asm: $(BUILD)/kernel.img
-	$(COMPILER_PREFIX)-objdump -D -b binary -m armv5te $< > $@
-	
-$(BUILD)/kernel.listing: $(BUILD)/kernel.elf
-	$(COMPILER_PREFIX)-objdump -d $< > $(BUILD)/kernel.listing
+kernel: $(DEPENDENCY_TARGETS) $(ELF_LISTING) $(IMG_LISTING)
 
-$(BUILD)/kernel.elf: $(BUILD) Makefile kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o
-	$(LINK) -o $(BUILD)/kernel.elf -T kernel.ld $(BUILD)/bootstrap.o $(BUILD)/main.o $(BUILD)/driver/bcm2835.o $(BUILD_PREFIX)/lib/c.o $(BUILD_PREFIX)/lib/graphics.o
+$(ELF): $(OBJECTS) $(DEPENDENCY_OBJECTS) $(STATIC_LIBS)
+	#TODO: bootstrap.o needs to be explicitly linked,
+	#      otherwise it will not be included in the binary.
+	#      How could this be done automatically?
+	$(LINK) -o $@ -T kernel.ld $(BUILDPATH)/platform/bcm2835/bootstrap.o $^
+
+$(ELF_LISTING): $(ELF)
+	$(OBJDUMP) -d $^ > $@
 	
-$(BUILD)/%.o: %.s
-	$(CC) -o $@ $<
+$(BUILDPATH)/kernel.img: $(ELF)
+	$(OBJCOPY) $^ -O binary $@
 	
-$(BUILD)/%.o: %.c
-	$(CC) -o $@ $<
+$(IMG_LISTING): $(BUILDPATH)/kernel.img
+	$(OBJDUMP) -D -b binary -m $(TARGET_MACHINE) $^ > $@
 	
-$(BUILD):
-	mkdir -p $@
+qemu: $(KERNEK_ELF_LISTING)
+	$(QEMU) $(QEMU_FLAGS) -kernel $(ELF) 
 	
-$(BUILD)/driver/bcm2835/gpio:
-	mkdir -p $@
+qemu-debug: $(ELF_LISTING)
+	$(QEMU) $(QEMU_FLAGS) -s -S -kernel $(ELF) &
+	$(GDB) --command=gdbinit-qemu $(ELF)
 	
-$(BUILD)/driver/bcm2835/uart:
-	mkdir -p $@
-	
-qemu: kernel
-	$(TOOLCHAIN)/qemu-system-arm -kernel $(BUILD)/kernel.elf -cpu arm1176 -m 256 -M raspi -serial stdio
-	
-qemu-debug: kernel
-	$(TOOLCHAIN)/qemu-system-arm -s -S -kernel $(BUILD)/kernel.elf -cpu arm1176 -m 256 -M raspi -serial stdio &
-	$(COMPILER_PREFIX)-gdb --command=gdbinit-qemu $(BUILD)/kernel.elf
-	
-clean:
-	rm -rf $(BUILD)
+include $(BASE)/build-executable.mk
