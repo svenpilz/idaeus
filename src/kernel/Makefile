@@ -1,6 +1,6 @@
 BASE = ../..
 NAME = kernel
-COMPILATION_UNITS = main
+COMPILATION_UNITS = main syscall
 LIBS = c graphics
 DEPENDENCY = arch/arm platform/bcm2835
 include $(BASE)/configuration-executable.mk

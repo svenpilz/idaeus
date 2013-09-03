@@ -9,6 +9,8 @@ void __attribute__ ((interrupt ("SWI"))) swi(void) {
 	 */
 	asm volatile ("ldr %0, [lr,#-4]" : "=r" (syscall_id));
 	syscall_id &= 0x00FFFFFF;
+	
+	handle_syscall_request(syscall_id);
 }
 
 void __attribute__ ((interrupt)) irq(void) {	
