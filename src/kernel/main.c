@@ -9,6 +9,14 @@
 
 uint8_t buffer[1024*768*3];
 
+#define TIMER_TICK 1000*1000
+#define TIMER 1
+
+void handler() {
+	timer_channel_set_comperator(TIMER, timer_current_counter() + TIMER_TICK);
+	puts("timer tick");
+}
+
 void main(uint32_t unused, uint32_t arm_linux_machine_type, uint32_t atag) {
 	arch_init();
 	platform_init();
@@ -33,5 +41,8 @@ void main(uint32_t unused, uint32_t arm_linux_machine_type, uint32_t atag) {
 	puts("swi");
 	asm("swi 1");	
 	puts("terminate");
+	
+	timer_channel_set_comperator(TIMER, timer_current_counter() + TIMER_TICK);
+	timer_channel_set_event_handler(TIMER, handler);
 }
 

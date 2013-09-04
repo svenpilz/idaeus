@@ -1,6 +1,6 @@
 BASE = ../../../..
 NAME = kernel/platform/bcm2835
-COMPILATION_UNITS = platform bootstrap framebuffer gpio mailbox uart
+COMPILATION_UNITS = platform bootstrap framebuffer gpio mailbox uart timer
 LIBS = c
 include $(BASE)/configuration-executable.mk
 
