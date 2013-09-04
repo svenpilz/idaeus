@@ -58,15 +58,17 @@ static void __attribute__ ((interrupt)) unused(void) {
 /*
  * irq
  */
-static void __attribute__ ((interrupt)) irq(void) {
+static void __attribute__ ((interrupt("IRQ"))) irq(void) {
 	handle_cpu_error();
 }
 
 /*
  * fiq
  */
-static void __attribute__ ((interrupt)) fiq(void) {
-	handle_cpu_error();
+static void __attribute__ ((interrupt("FIQ"))) fiq(void) {
+	//handle_cpu_error();
+	timer();
+	//arm_enable_fiq();
 }
 
 
@@ -90,5 +92,11 @@ int arm_install_interrupt_handler() {
 	intall_interrupt_handler(0x1c, fiq);
 	
 	return 0;
+}
+
+void arm_enable_fiq() {
+	asm volatile ("mrs r0,cpsr;"
+                      "bic r0,#0x40;"
+                      "msr cpsr_ctl,r0" ::: "r0");
 }
 
