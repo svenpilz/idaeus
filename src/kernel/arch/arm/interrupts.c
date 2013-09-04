@@ -49,6 +49,13 @@ static void __attribute__ ((interrupt)) data_abort(void) {
 }
 
 /*
+ * unused
+ */
+static void __attribute__ ((interrupt)) unused(void) {
+	handle_cpu_error();
+}
+
+/*
  * irq
  */
 static void __attribute__ ((interrupt)) irq(void) {
@@ -78,8 +85,9 @@ int arm_install_interrupt_handler() {
 	intall_interrupt_handler(0x8, swi);
 	intall_interrupt_handler(0xc, prefetch_abort);
 	intall_interrupt_handler(0x10, data_abort);
-	intall_interrupt_handler(0x14, irq);
-	intall_interrupt_handler(0x18, fiq);
+	intall_interrupt_handler(0x14, unused);
+	intall_interrupt_handler(0x18, irq);
+	intall_interrupt_handler(0x1c, fiq);
 	
 	return 0;
 }
