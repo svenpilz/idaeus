@@ -1,0 +1,6 @@
+#ifndef KERNEL_PLATFORM_BCM2835_TIMER_H
+#define KERNEL_PLATFORM_BCM2835_TIMER_H
+
+int timer_init();
+
+#endif
