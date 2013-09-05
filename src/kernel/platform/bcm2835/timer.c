@@ -74,6 +74,8 @@ int timer_init() {
     	CONTROL_REGISTER = 1 << 2;
     	CONTROL_REGISTER = 1 << 3;
     	CONTROL_REGISTER = 1 << 4;
+    	
+    	printf("bcm2835 timer: %u channels, signaling as FIQ.\n", NUMBER_OF_TIMERS);
 }
 
 uint timer_number_of_channels() {

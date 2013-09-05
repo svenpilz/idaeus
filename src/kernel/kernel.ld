@@ -1,9 +1,16 @@
 SECTIONS {
 	/*
 	 * Raspberry Pi bootloader executes at 0x8000.
+	 * All sections are page aligned.
 	 */
 	. = 0x8000;
+	__kernel_start = .;
 	
+	
+	/*
+	 * text
+	 */
+	__kernel_text_start = .;
 	.text : {
 		/*
 		 * First the bootstrap code.
@@ -11,22 +18,40 @@ SECTIONS {
 		*(.text.bootstrap)
 		*(.text)
 	}
+	. = ALIGN(4096);
+	__kernel_text_end = .;
+	
 
+	/*
+	 * rodata
+	 */
+	__kernel_rodata_start = .;
 	.rodata : {
 		*(.rodata)
 	}
+	. = ALIGN(4096);
+	__kernel_rodata_end = .;
 	
+	
+	/*
+	 * data
+	 */
+	__kernel_data_start = .;
 	.data : {
 		*(.data)
 	}
+	. = ALIGN(4096);
+	__kernel_data_end = .;
+
 
 	/*
-	 * The labels _bss_start and _bss_end are needed
-	 * to set the whole section to 0's.
-	 */
-	_bss_start = .;
+	 * bss
+	 */	
+	__kernel_bss_start = .;
 	.bss : {
 		*(.bss)
 	}
-	_bss_end = .;
+	. = ALIGN(4096);
+	__kernel_bss_end = .;
+	__kernel_end = .;
 }
