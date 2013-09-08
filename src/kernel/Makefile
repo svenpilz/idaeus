@@ -1,7 +1,7 @@
 BASE = ../..
 NAME = kernel
-COMPILATION_UNITS = main syscall error_handler clock
-LIBS = c graphics
+COMPILATION_UNITS = main syscall error_handler clock memory
+LIBS = bitmap graphics c
 DEPENDENCY = arch/arm platform/bcm2835
 include $(BASE)/configuration-executable.mk
 

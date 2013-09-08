@@ -19,7 +19,7 @@ SECTIONS {
 		*(.text)
 	}
 	. = ALIGN(4096);
-	__kernel_text_end = .;
+	__kernel_text_end = . - 1;
 	
 
 	/*
@@ -30,7 +30,7 @@ SECTIONS {
 		*(.rodata)
 	}
 	. = ALIGN(4096);
-	__kernel_rodata_end = .;
+	__kernel_rodata_end = . - 1;
 	
 	
 	/*
@@ -41,7 +41,7 @@ SECTIONS {
 		*(.data)
 	}
 	. = ALIGN(4096);
-	__kernel_data_end = .;
+	__kernel_data_end = . - 1;
 
 
 	/*
@@ -52,6 +52,6 @@ SECTIONS {
 		*(.bss)
 	}
 	. = ALIGN(4096);
-	__kernel_bss_end = .;
-	__kernel_end = .;
+	__kernel_bss_end = . - 1;
+	__kernel_end = . - 1;
 }
