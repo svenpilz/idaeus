@@ -18,7 +18,7 @@ void bitmap_unset_all(bitmap_t* m) {
 }
 
 void bitmap_set_all(bitmap_t* m) {
-	memset(m->buckets, UINT_MAX, m->number_of_buckets * sizeof(bitmap_bucket_t));
+	memset(m->buckets, 0xff, m->number_of_buckets * sizeof(bitmap_bucket_t));
 }
 
 int bitmap_unset(bitmap_t* m, bit_position_t b) {
