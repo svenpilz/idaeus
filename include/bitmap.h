@@ -30,4 +30,7 @@ int bitmap_first_set(bitmap_t* m, bit_position_t* b);
 int bitmap_first_unset_range(bitmap_t* m, bit_position_t* b, bit_position_t number_of_bits);
 int bitmap_first_set_range(bitmap_t* m, bit_position_t* b, bit_position_t number_of_bits);
 
+bit_position_t bitmap_count_unset(bitmap_t* m);
+bit_position_t bitmap_count_set(bitmap_t* m);
+
 #endif

@@ -81,8 +81,8 @@ int bitmap_first_unset_range(bitmap_t* m, bit_position_t* b, bit_position_t numb
 			}
 			
 			in_string = 1;
-			current_range += bucket*bits_per_bucket;
-		} else if (m->buckets[bucket] == UINT_MAX) {
+			current_range += bits_per_bucket;
+		} else if (m->buckets[bucket] == ~0) {
 			// all bits are set
 			
 			in_string = 0;
@@ -142,7 +142,7 @@ int bitmap_first_set_range(bitmap_t* m, bit_position_t* b, bit_position_t number
 			continue;
 			
 			
-		} else if (m->buckets[bucket] == UINT_MAX) {
+		} else if (m->buckets[bucket] == ~0) {
 			// all bits are set
 			
 			if (!in_string) {
@@ -150,7 +150,7 @@ int bitmap_first_set_range(bitmap_t* m, bit_position_t* b, bit_position_t number
 			}
 			
 			in_string = 1;
-			current_range += bucket*bits_per_bucket;
+			current_range += bits_per_bucket;
 		} else {
 			// some are set, some are unset
 			for (bit_position_t i = bucket*bits_per_bucket;
@@ -185,5 +185,51 @@ int bitmap_first_set_range(bitmap_t* m, bit_position_t* b, bit_position_t number
 		// no range found
 		return -1;
 	}
+}
+
+bit_position_t bitmap_count_unset(bitmap_t* m) {
+	bit_position_t count = 0;
+	
+	for (size_t bucket = 0; bucket < m->number_of_buckets; ++bucket) {
+		if (m->buckets[bucket] == 0) {
+			count += bits_per_bucket;
+		} else if (m->buckets[bucket] == ~0) {
+			continue;
+		} else {
+			for (bit_position_t i = bucket*bits_per_bucket;
+				i < bucket*bits_per_bucket + bits_per_bucket; ++i) {
+				
+				if (!bitmap_is_set(m, i)) {
+					++count;
+				}
+			}
+		}
+		
+	}
+	
+	return count;
+}
+
+bit_position_t bitmap_count_set(bitmap_t* m) {
+	bit_position_t count = 0;
+	
+	for (size_t bucket = 0; bucket < m->number_of_buckets; ++bucket) {
+		if (m->buckets[bucket] == 0) {
+			continue;
+		} else if (m->buckets[bucket] == ~0) {
+			count += bits_per_bucket;
+		} else {
+			for (bit_position_t i = bucket*bits_per_bucket;
+				i < bucket*bits_per_bucket + bits_per_bucket; ++i) {
+				
+				if (bitmap_is_set(m, i)) {
+					++count;
+				}
+			}
+		}
+		
+	}
+	
+	return count;
 }
 
