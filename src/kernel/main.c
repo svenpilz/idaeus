@@ -23,9 +23,13 @@ extern void __kernel_data_end;
 extern void __kernel_bss_start;
 extern void __kernel_bss_end;
 
+platform_information_t platform_information;
+
 void main(uint32_t unused, uint32_t arm_linux_machine_type, uint32_t atag) {
 	arch_init();
-	platform_init();
+	platform_init(atag, &platform_information);
+	
+	printf("kernel platform: memory=%u bytes, page_size=%u bytes.\n", platform_information.memory_size, platform_information.memory_page_size);
 	
 	kernel_clock_init();
 	

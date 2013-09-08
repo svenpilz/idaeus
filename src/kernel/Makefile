@@ -27,10 +27,10 @@ $(IMG_LISTING): $(BUILDPATH)/kernel.img
 	$(OBJDUMP) -D -b binary -m $(TARGET_MACHINE) $^ > $@
 	
 qemu: kernel
-	$(QEMU) $(QEMU_FLAGS) -kernel $(ELF) 
+	$(QEMU) $(QEMU_FLAGS) -kernel $(BUILDPATH)/kernel.img -initrd $(BUILDPATH)/kernel.img
 	
 qemu-debug: kernel
-	$(QEMU) $(QEMU_FLAGS) -s -S -kernel $(ELF) &
+	$(QEMU) $(QEMU_FLAGS) -s -S -kernel $(BUILDPATH)/kernel.img -initrd $(BUILDPATH)/kernel.img &
 	$(GDB) --command=gdbinit-qemu $(ELF)
 	
 include $(BASE)/build-executable.mk
