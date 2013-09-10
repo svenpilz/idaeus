@@ -1,78 +1,64 @@
 #include <stdint.h>
+#include <stdio.h>
 
 #include <kernel/syscall.h>
 #include <kernel/error_handler.h>
+#include <kernel/interfaces/interrupts.h>
 
-/*
- * Reset
- */
-static void __attribute__ ((interrupt)) reset(void) {
-	handle_cpu_error();
-}
+arch_register_set_t* arm_interrupt_saved_register_set;
 
-/*
- * Undefined instruction
- */
-static void __attribute__ ((interrupt)) undefined(void) {
-	handle_cpu_error();
-}
+extern void arm_interrupt_entry_reset();
+extern void arm_interrupt_entry_undefined();
+extern void arm_interrupt_entry_swi();
+extern void arm_interrupt_entry_prefetch_abort();
+extern void arm_interrupt_entry_data_abort();
+extern void arm_interrupt_entry_unused();
+extern void arm_interrupt_entry_irq();
+extern void arm_interrupt_entry_fiq();
 
+typedef enum {
+	ARM_INTERRUPT_RESET = 0,
+	ARM_INTERRUPT_UNDEFINED = 1,
+	ARM_INTERRUPT_SWI = 2,
+	ARM_INTERRUPT_PREFETCH_ABORT = 3,
+	ARM_INTERRUPT_DATA_ABORT = 4,
+	ARM_INTERRUPT_UNUSED = 5,
+	ARM_INTERRUPT_IRQ = 6,
+	ARM_INTERRUPT_FIQ = 7
+} arm_interrupt_type_t;
 
-/*
- * Software interrupt
- */
-static void __attribute__ ((interrupt ("SWI"))) swi(void) {
+arch_register_set_t* arm_handle_interrupt(arm_interrupt_type_t interrupt, arch_register_set_t* register_set) {
 	uint32_t syscall_id;
 	
-	/*
-	 * Read “comment” section of SWI instruction, this is
-	 * used as the syscall id.
-	 */
-	asm volatile ("ldr %0, [lr,#-4]" : "=r" (syscall_id));
-	syscall_id &= 0x00FFFFFF;
+	arm_interrupt_saved_register_set = register_set;
 	
-	handle_syscall_request(syscall_id);
+	switch (interrupt) {
+		case ARM_INTERRUPT_RESET:
+		case ARM_INTERRUPT_UNDEFINED:
+			handle_cpu_error();
+			break;
+		case ARM_INTERRUPT_SWI:
+			asm volatile ("ldr %0, [lr,#-4]" : "=r" (syscall_id));
+			syscall_id &= 0x00FFFFFF;
+			handle_syscall_request(syscall_id);
+			break;
+		case ARM_INTERRUPT_PREFETCH_ABORT:
+		case ARM_INTERRUPT_DATA_ABORT:
+		case ARM_INTERRUPT_UNUSED:
+		case ARM_INTERRUPT_IRQ:
+			handle_cpu_error();
+			break;
+		case ARM_INTERRUPT_FIQ:
+			timer();
+			break;
+		default:
+			handle_cpu_error();
+	}
+	
+	return arm_interrupt_saved_register_set;
 }
 
-/*
- * prefetch abort
- */
-static void __attribute__ ((interrupt)) prefetch_abort(void) {
-	handle_cpu_error();
-}
-
-/*
- * data abort
- */
-static void __attribute__ ((interrupt)) data_abort(void) {
-	handle_cpu_error();
-}
-
-/*
- * unused
- */
-static void __attribute__ ((interrupt)) unused(void) {
-	handle_cpu_error();
-}
-
-/*
- * irq
- */
-static void __attribute__ ((interrupt("IRQ"))) irq(void) {
-	handle_cpu_error();
-}
-
-/*
- * fiq
- */
-static void __attribute__ ((interrupt("FIQ"))) fiq(void) {
-	//handle_cpu_error();
-	timer();
-	//arm_enable_fiq();
-}
-
-
-void intall_interrupt_handler(uint32_t interrupt, void* handler) {
+static void install_entry(uint32_t interrupt, void* handler) {
 	/*
 	 * Opcode: 0xEA (Branch, no link, always) and
 	 *         relative branch address.
@@ -81,15 +67,16 @@ void intall_interrupt_handler(uint32_t interrupt, void* handler) {
 	*((uint32_t*)interrupt) = 0xEA000000 + (uint32_t)handler;
 }
 
+
 int arm_install_interrupt_handler() {
-	intall_interrupt_handler(0x0, reset);
-	intall_interrupt_handler(0x4, undefined);
-	intall_interrupt_handler(0x8, swi);
-	intall_interrupt_handler(0xc, prefetch_abort);
-	intall_interrupt_handler(0x10, data_abort);
-	intall_interrupt_handler(0x14, unused);
-	intall_interrupt_handler(0x18, irq);
-	intall_interrupt_handler(0x1c, fiq);
+	install_entry(0x0, arm_interrupt_entry_reset);
+	install_entry(0x4, arm_interrupt_entry_undefined);
+	install_entry(0x8, arm_interrupt_entry_swi);
+	install_entry(0xc, arm_interrupt_entry_prefetch_abort);
+	install_entry(0x10, arm_interrupt_entry_data_abort);
+	install_entry(0x14, arm_interrupt_entry_unused);
+	install_entry(0x18, arm_interrupt_entry_irq);
+	install_entry(0x1c, arm_interrupt_entry_fiq);
 	
 	return 0;
 }

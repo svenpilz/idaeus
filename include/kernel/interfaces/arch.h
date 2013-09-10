@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "../arch/arm.h"
+
 int arch_init();
 
 #endif
