@@ -1,11 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include <kernel/kernel.h>
 #include <kernel/syscall.h>
 #include <kernel/error_handler.h>
 #include <kernel/interfaces/interrupts.h>
-
-arch_register_set_t* arm_interrupt_saved_register_set;
 
 extern void arm_interrupt_entry_reset();
 extern void arm_interrupt_entry_undefined();
@@ -30,8 +29,6 @@ typedef enum {
 arch_register_set_t* arm_handle_interrupt(arm_interrupt_type_t interrupt, arch_register_set_t* register_set) {
 	uint32_t syscall_id;
 	
-	arm_interrupt_saved_register_set = register_set;
-	
 	switch (interrupt) {
 		case ARM_INTERRUPT_RESET:
 		case ARM_INTERRUPT_UNDEFINED:
@@ -54,8 +51,8 @@ arch_register_set_t* arm_handle_interrupt(arm_interrupt_type_t interrupt, arch_r
 		default:
 			handle_cpu_error();
 	}
-	
-	return arm_interrupt_saved_register_set;
+
+	return kernel_handle_interrupt(register_set);
 }
 
 static void install_entry(uint32_t interrupt, void* handler) {

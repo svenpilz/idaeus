@@ -11,10 +11,26 @@
 
 #include "clock.h"
 #include "memory.h"
+#include "scheduler.h"
 
 uint8_t buffer[1024*768*3];
 
 platform_information_t platform_information;
+
+void foo() {
+	
+	while(1) {printf("new thread says hello!\n");}
+}
+
+arch_register_set_t* kernel_handle_interrupt(arch_register_set_t* register_set) {
+	kernel_schedule_threads();
+	
+	register_set->r[15] = foo;
+	
+	return register_set;
+}
+
+
 
 void main(uint32_t unused, uint32_t arm_linux_machine_type, uint32_t atag) {
 	arch_init();
