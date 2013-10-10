@@ -1,35 +1,94 @@
 #include <idaeus/unicode.h>
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
+#include <cstdio>
 
 namespace idaeus {
 
 unicode unicode::fromUTF8(const char* str) {
 	assert(str != NULL);
-	size_t len = strlen(str);
 	
-	unicode u(len);
-	for (size_t i = 0; i < len; ++i) {
-		u[i] = *str++;
+	unsigned char next = 0;
+	unicode_char sequence;
+	unicode u(strlen(str));
+	
+	for (; *str != NULL; ++str) {
+		if (next == 0) {
+			if ((*str & 0x80) == 0x0) { //0xxxxxxx
+				next = 0;
+				sequence = *str;
+			} else if ((*str & 0xE0) == 0xC0) { //110xxxxx
+				next = 1;
+				sequence = (*str++ & 0x1F) << 6;
+			} else if ((*str & 0xF0) == 0xE0) { //1110xxxx
+				next = 2;
+				sequence = (*str++ & 0xF) << 12;		
+			} else if ((*str & 0xF8) == 0xF0) { //11110xxx
+				next = 3;
+				sequence = (*str++ & 0x7) << 18;
+			} else if ((*str & 0xFC) == 0xF8) { //111110xx
+				next = 4;
+				sequence = (*str++ & 0x3) << 24;
+			} else if ((*str & 0xFE) == 0xFC) { //1111110x
+				next = 5;
+				sequence = (*str++ & 0x1) << 30;
+			} else {		
+				printf("(error 1: %s 0x%hhx) ", str, *str);
+			}
+		}
+		
+		if (next > 0) {			
+			next--;
+			if ((*str & 0xC0) == 0x80) {
+				sequence |= (*str & 0x3F) << next*6;
+			} else {
+				printf("(error 2: %s 0x%hhx n=%d) ", str, *str, next);
+			}
+		}
+		
+		if (next == 0) {
+			u.append(sequence);
+		}
+	}
+	
+	if (next != 0) {
+		puts("unexpected end of string");
 	}
 	
 	return u;
 }
 		
-unicode::unicode(size_t len) {
-
+unicode::unicode(size_t len) : string(NULL), stringlen(0), contentlen(0) {
+	adjustSize(len);
 }
 
 unicode::~unicode() {
+	assert(string != NULL);
+	free(string);
+	string = NULL;
+}
 
+void unicode::adjustSize(size_t len) {
+	if (stringlen < len) {
+		string = (unicode_char*)realloc(string, sizeof(unicode_char)*len);
+		assert(string != NULL);
+		stringlen = len;
+	}
+}
+
+void unicode::append(unicode_char c) {
+	adjustSize(contentlen + 1);
+	string[contentlen++] = c;
 }
 		
-unicode_char& unicode::operator[](size_t i) const {
-
+unicode_char& unicode::operator[](size_t i) {
+	assert(i < contentlen);
+	return string[i];
 }
 
 size_t unicode::length() const {
-
+	return contentlen;
 }
 
 }
