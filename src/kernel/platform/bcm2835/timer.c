@@ -4,6 +4,7 @@
 #include <kernel/interfaces/timer.h>
 
 #include <stdint.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <assert.h>
 
