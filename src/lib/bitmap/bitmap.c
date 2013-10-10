@@ -70,7 +70,7 @@ int bitmap_first_unset_range(bitmap_t* m, bit_position_t* b, bit_position_t numb
 		return -1;
 	}
 
-	uint in_string = 0;
+	unsigned int in_string = 0;
 	bit_position_t current_range = 0;
 	for (size_t bucket = 0; bucket < m->number_of_buckets; ++bucket) {
 		if (m->buckets[bucket] == 0) {
@@ -130,7 +130,7 @@ int bitmap_first_set_range(bitmap_t* m, bit_position_t* b, bit_position_t number
 		return -1;
 	}
 
-	uint in_string = 0;
+	unsigned int in_string = 0;
 	bit_position_t current_range = 0;
 	for (size_t bucket = 0; bucket < m->number_of_buckets; ++bucket) {
 		if (m->buckets[bucket] == 0) {

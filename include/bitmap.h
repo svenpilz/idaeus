@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BITMAP_H
 #define INCLUDE_BITMAP_H
 
-#include <stdint.h>
+#include <stddef.h>
 
 typedef unsigned int bit_position_t;
 typedef unsigned int bitmap_bucket_t;
