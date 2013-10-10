@@ -2,6 +2,7 @@
 #define INCLUDE_LIBC_STRING_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 void* memchr(void* string, unsigned char value, size_t length);
 int memcmp(const void* s1, const void* s2, size_t num);
