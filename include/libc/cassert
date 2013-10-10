@@ -1,0 +1,8 @@
+#ifndef INCLUDE_LIBC_CASSERT
+#define INCLUDE_LIBC_CASSERT
+
+extern "C" {
+	#include "assert.h"
+}
+
+#endif

@@ -13,15 +13,22 @@ ABI = $(ARCH)-none-eabi
 TARGET_MACHINE = armv5te
 QEMU_FLAGS = -cpu arm1176 -m 256 -M raspi -serial stdio
 
-CFLAGS = --std=gnu11 -fno-builtin -I $(BASE)/include/libc -I $(BASE)/include -c
-CFLAGS += -o2
-CFLAGS += -g
+BASE_COMPILER_FLAGS = -fno-builtin -I $(BASE)/include/libc -I $(BASE)/include -c
+BASE_COMPILER_FLAGS += -o2
+BASE_COMPILER_FLAGS += -g
+
+CXXFLAGS = $(BASE_COMPILER_FLAGS)
+CXXFLAGS += --std=c++11
+
+CFLAGS = $(BASE_COMPILER_FLAGS)
+CFLAGS += --std=gnu11
 
 ifdef COMPILE_FOR_LOCAL_UNIT_TEST
 LINK = ld
 OBJCOPY = objcopy
 OBJDUMP = objdump
 CC = gcc
+CXX = g++
 GDB = gdb
 PACK = ar rs
 else
@@ -30,6 +37,7 @@ LINK = $(TOOLCHAIN)/$(ABI)-ld
 OBJCOPY = $(TOOLCHAIN)/$(ABI)-objcopy
 OBJDUMP = $(TOOLCHAIN)/$(ABI)-objdump
 CC = $(TOOLCHAIN)/$(ABI)-gcc
+CXX = $(TOOLCHAIN)/$(ABI)-g++
 GDB = $(TOOLCHAIN)/$(ABI)-gdb
 PACK = $(TOOLCHAIN)/$(ABI)-ar rs
 QEMU = $(TOOLCHAIN)/qemu-system-$(ARCH) #-d int

@@ -1,0 +1,8 @@
+#ifndef INCLUDE_LIBC_CSTRING
+#define INCLUDE_LIBC_CSTRING
+
+extern "C" {
+	#include "string.h"
+}
+
+#endif

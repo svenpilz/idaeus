@@ -6,6 +6,9 @@ $(BUILDPATH)/%.o: %.c %.h
 	
 $(BUILDPATH)/%.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
+	
+$(BUILDPATH)/%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
 $(BUILDPATH)/%.o: %.s
 	$(CC) $(CFLAGS) -o $@ $<
