@@ -13,7 +13,7 @@ ABI = $(ARCH)-none-eabi
 TARGET_MACHINE = armv5te
 QEMU_FLAGS = -cpu arm1176 -m 256 -M raspi -serial stdio
 
-BASE_COMPILER_FLAGS = -fno-builtin -I $(BASE)/include/libc -I $(BASE)/include -c
+BASE_COMPILER_FLAGS = -fno-builtin -I $(BASE)/include -c
 BASE_COMPILER_FLAGS += -o2
 BASE_COMPILER_FLAGS += -g
 
@@ -41,7 +41,7 @@ CXX = $(TOOLCHAIN)/$(ABI)-g++
 GDB = $(TOOLCHAIN)/$(ABI)-gdb
 PACK = $(TOOLCHAIN)/$(ABI)-ar rs
 QEMU = $(TOOLCHAIN)/qemu-system-$(ARCH) #-d int
-CFLAGS += -mcpu=arm1176jzf-s
-CXXFLAGS += -mcpu=arm1176jzf-s
+CFLAGS += -mcpu=arm1176jzf-s -I $(BASE)/include/libc
+CXXFLAGS += -mcpu=arm1176jzf-s -I $(BASE)/include/libc
 endif
 
