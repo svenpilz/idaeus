@@ -1,6 +1,6 @@
 BASE = ..
 NAME = testrunner
-LIBS = bitmap idaeus-unicode
+LIBS = bitmap idaeus-base
 COMPILE_FOR_LOCAL_UNIT_TEST = 1
 include $(BASE)/configuration-executable.mk
 

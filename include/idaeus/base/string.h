@@ -1,26 +1,26 @@
-#ifndef INCLUDE_IDAEUS_UNICODE_H
-#define INCLUDE_IDAEUS_UNICODE_H
+#ifndef INCLUDE_IDAEUS_BASE_STRING_H
+#define INCLUDE_IDAEUS_BASE_STRING_H
 
 #include <cstddef>
 
 namespace idaeus {
 	typedef unsigned int unicode_char;
 	
-	class unicode {
+	class String {
 	public:
-		static unicode fromUTF8(const char* str);
+		static String fromUTF8(const char* str);
 		
-		unicode(size_t len);
-		~unicode();
+		String(size_t len);
+		~String();
 		
 		unicode_char& operator[](size_t i);
 		size_t length() const;
 		void append(unicode_char c);
 		
 	private:
-		unicode_char* string;
+		unicode_char* data;
+		size_t datalen;
 		size_t stringlen;
-		size_t contentlen;
 		
 		void adjustSize(size_t len);
 	};

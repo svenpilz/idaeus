@@ -1,4 +1,4 @@
-#include <idaeus/unicode.h>
+#include <idaeus/base/string.h>
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
@@ -6,12 +6,12 @@
 
 namespace idaeus {
 
-unicode unicode::fromUTF8(const char* str) {
+String String::fromUTF8(const char* str) {
 	assert(str != NULL);
 	
 	unsigned char next = 0;
 	unicode_char sequence;
-	unicode u(strlen(str));
+	String u(strlen(str));
 	
 	for (; *str != NULL; ++str) {
 		if (next == 0) {
@@ -59,36 +59,36 @@ unicode unicode::fromUTF8(const char* str) {
 	return u;
 }
 		
-unicode::unicode(size_t len) : string(NULL), stringlen(0), contentlen(0) {
+String::String(size_t len) : data(NULL), datalen(0), stringlen(0) {
 	adjustSize(len);
 }
 
-unicode::~unicode() {
-	assert(string != NULL);
-	free(string);
-	string = NULL;
+String::~String() {
+	assert(data != NULL);
+	free(data);
+	data = NULL;
 }
 
-void unicode::adjustSize(size_t len) {
+void String::adjustSize(size_t len) {
 	if (stringlen < len) {
-		string = (unicode_char*)realloc(string, sizeof(unicode_char)*len);
-		assert(string != NULL);
-		stringlen = len;
+		data = (unicode_char*)realloc(data, sizeof(unicode_char)*len);
+		assert(data != NULL);
+		datalen = len;
 	}
 }
 
-void unicode::append(unicode_char c) {
-	adjustSize(contentlen + 1);
-	string[contentlen++] = c;
+void String::append(unicode_char c) {
+	adjustSize(stringlen + 1);
+	data[stringlen++] = c;
 }
 		
-unicode_char& unicode::operator[](size_t i) {
-	assert(i < contentlen);
-	return string[i];
+unicode_char& String::operator[](size_t i) {
+	assert(i < stringlen);
+	return data[i];
 }
 
-size_t unicode::length() const {
-	return contentlen;
+size_t String::length() const {
+	return stringlen;
 }
 
 }

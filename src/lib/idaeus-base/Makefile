@@ -1,9 +1,9 @@
 BASE = ../../..
-NAME = idaeus-unicode
-COMPILATION_UNITS = unicode
+NAME = idaeus-base
+COMPILATION_UNITS = string
 include $(BASE)/configuration-library.mk
 
-LISTING = $(BUILDPATH)/idaeus-unicode.listing
+LISTING = $(BUILDPATH)/idaeus-base.listing
 
 libidaeus-unicode: $(BUILDPATH) $(LISTING)
 
