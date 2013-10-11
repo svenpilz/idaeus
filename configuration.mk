@@ -42,6 +42,6 @@ GDB = $(TOOLCHAIN)/$(ABI)-gdb
 PACK = $(TOOLCHAIN)/$(ABI)-ar rs
 QEMU = $(TOOLCHAIN)/qemu-system-$(ARCH) #-d int
 CFLAGS += -mcpu=arm1176jzf-s -I $(BASE)/include/libc
-CXXFLAGS += -mcpu=arm1176jzf-s -I $(BASE)/include/libc
+CXXFLAGS += -mcpu=arm1176jzf-s -I $(BASE)/include/libc++ -I $(BASE)/include/libc
 endif
 

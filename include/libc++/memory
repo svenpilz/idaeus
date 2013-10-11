@@ -1,0 +1,6 @@
+#ifndef INCLUDE_LIBCXX_MEMORY
+#define INCLUDE_LIBCXX_MEMORY
+
+#include "shared_ptr.h"
+
+#endif

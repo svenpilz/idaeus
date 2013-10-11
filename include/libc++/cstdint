@@ -1,0 +1,8 @@
+#ifndef INCLUDE_LIBCXX_CSTDINT
+#define INCLUDE_LIBCXX_CSTDINT
+
+extern "C" {
+	#include "../libc/stdint.h"
+}
+
+#endif

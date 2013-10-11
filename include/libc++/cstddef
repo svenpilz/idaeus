@@ -1,0 +1,8 @@
+#ifndef INCLUDE_LIBCXX_CSTDDEF
+#define INCLUDE_LIBCXX_CSTDDEF
+
+extern "C" {
+	#include "../libc/stddef.h"
+}
+
+#endif

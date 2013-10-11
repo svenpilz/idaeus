@@ -64,9 +64,10 @@ String::String(size_t len) : data(NULL), datalen(0), stringlen(0) {
 }
 
 String::~String() {
+	printf("String::~String: free 0x%x ", data);
 	assert(data != NULL);
 	free(data);
-	data = NULL;
+	data = NULL;	
 }
 
 void String::adjustSize(size_t len) {
