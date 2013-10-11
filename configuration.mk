@@ -13,7 +13,7 @@ ABI = $(ARCH)-none-eabi
 TARGET_MACHINE = armv5te
 QEMU_FLAGS = -cpu arm1176 -m 256 -M raspi -serial stdio
 
-BASE_COMPILER_FLAGS = -fno-builtin -I $(BASE)/include -c
+BASE_COMPILER_FLAGS = -fno-builtin -ffreestanding -I $(BASE)/include -c
 BASE_COMPILER_FLAGS += -o2
 BASE_COMPILER_FLAGS += -g
 
