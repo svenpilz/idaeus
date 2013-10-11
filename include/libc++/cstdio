@@ -1,0 +1,8 @@
+#ifndef INCLUDE_LIBCXX_CSTDIO
+#define INCLUDE_LIBCXX_CSTDIO
+
+extern "C" {
+	#include "../libc/stdio.h"
+}
+
+#endif

@@ -32,7 +32,7 @@ public:
 		
 		for (size_t i = 0; i < u.length(); ++i) {
 			CPPUNIT_ASSERT_EQUAL_MESSAGE("ucs compare", ucs[i], u[i]);
-		}puts("bl");
+		}
 	}
 };
 

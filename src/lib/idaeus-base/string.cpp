@@ -1,7 +1,6 @@
 #include <idaeus/base/string.h>
 #include <cassert>
 #include <cstring>
-#include <cstdlib>
 #include <cstdio>
 
 namespace idaeus {
@@ -11,9 +10,9 @@ String String::fromUTF8(const char* str) {
 	
 	unsigned char next = 0;
 	unicode_char sequence;
-	String u(strlen(str));
+	String u;
 	
-	for (; *str != NULL; ++str) {
+	for (; *str != 0; ++str) {
 		if (next == 0) {
 			if ((*str & 0x80) == 0x0) { //0xxxxxxx
 				next = 0;
@@ -59,37 +58,24 @@ String String::fromUTF8(const char* str) {
 	return u;
 }
 		
-String::String(size_t len) : data(NULL), datalen(0), stringlen(0) {
-	adjustSize(len);
+String::String() : _data(new std::vector<unicode_char>()) {
+	
 }
 
-String::~String() {
-	printf("String::~String: free 0x%x ", data);
-	assert(data != NULL);
-	free(data);
-	data = NULL;	
-}
-
-void String::adjustSize(size_t len) {
-	if (stringlen < len) {
-		data = (unicode_char*)realloc(data, sizeof(unicode_char)*len);
-		assert(data != NULL);
-		datalen = len;
-	}
+String::String(size_t n) : _data(new std::vector<unicode_char>()) {
+	_data->reserve(n);
 }
 
 void String::append(unicode_char c) {
-	adjustSize(stringlen + 1);
-	data[stringlen++] = c;
+	_data->push_back(c);
 }
 		
 unicode_char& String::operator[](size_t i) {
-	assert(i < stringlen);
-	return data[i];
+	return _data->at(i);
 }
 
 size_t String::length() const {
-	return stringlen;
+	return _data->size();
 }
 
 }

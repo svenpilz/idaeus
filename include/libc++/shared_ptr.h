@@ -13,10 +13,12 @@ public:
 	
 	explicit shared_ptr (T* p) : _references(new int), _data(p)  {
 		(*_references)++;
+		printf("c%d ", *_references);
 	}
 
 	shared_ptr (const shared_ptr<T>& x) noexcept : _references(x._references), _data(x._data) {
 		(*_references)++;
+		printf("d%d ", *_references);
 	}
 	
 	~shared_ptr() {

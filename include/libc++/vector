@@ -1,0 +1,83 @@
+#ifndef INLCUDE_LIBXX_VECTOR
+#define INLCUDE_LIBXX_VECTOR
+
+#include <cstddef>
+#include <cstdio>
+
+namespace std {
+
+template<typename T>
+class vector {
+public:
+	static const size_t ADDITIONAL_ALLOCATION_SIZE = 10;
+	
+	vector() : _data(NULL), _capacity(0), _size(0) {
+	
+	}
+	
+	~vector() {
+		delete[] _data;
+		_data = NULL;
+		_size = 0;
+		_capacity = 0;
+	}
+
+	size_t capacity() const {
+		return _capacity;
+	}
+
+	size_t size() const {
+		return _size;
+	}
+	
+	bool empty() const {
+		return _size == 0;
+	}
+	
+	void resize(size_t n) {
+		n += ADDITIONAL_ALLOCATION_SIZE;
+		
+		T* new_data = new T[n];
+		size_t new_size = new_size > n ? n : _size;
+		
+		for (size_t i = 0; i < new_size; ++i) {
+			new_data[i] = _data[i];
+		}
+		
+		delete[] _data;
+		_data = new_data;
+		_size = new_size;
+		_capacity = n;
+	}
+	
+	void reserve(size_t n) {
+		if (n > _capacity) {
+			resize(n);
+		}
+	}
+	
+	void push_back(const T& val) {
+		reserve(_size + 1);
+		_data[_size++] = val;
+	}
+	
+	T& operator[] (size_t n) {
+		return _data[n];
+	}
+	
+	T& at(size_t n) {
+		assert(n < _size);
+		return _data[n];
+	}
+	
+protected:
+	T* _data;
+	size_t _capacity;
+	size_t _size;
+	
+	
+};
+
+}
+
+#endif
