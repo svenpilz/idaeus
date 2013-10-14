@@ -46,6 +46,22 @@ public:
 		return get();
 	}
 	
+	size_t use_count() const noexcept {
+		if (_references != NULL) {
+			return *_references;
+		} else {
+			return 0;
+		}
+	}
+	
+	bool unique() const noexcept {
+		return use_count() == 1;
+	}
+	
+	explicit operator bool() const noexcept {
+		return get() != NULL;
+	}
+	
 protected:
 	int* _references;
 	T* _data;
