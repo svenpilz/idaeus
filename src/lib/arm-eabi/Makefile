@@ -1,9 +1,9 @@
 BASE = ../../..
-NAME = c
-COMPILATION_UNITS = delay string math putc puts printf
+NAME = arm-eabi
+COMPILATION_UNITS = udiv udivmod
 include $(BASE)/configuration-library.mk
 
-LISTING = $(BUILDPATH)/c.listing
+LISTING = $(BUILDPATH)/arm-eabi.listing
 
 libc: $(BUILDPATH) $(LISTING)
 
