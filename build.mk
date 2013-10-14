@@ -17,4 +17,4 @@ $(DEPENDENCY_TARGETS):
 	make -C $(dir $@)
 	
 clean:
-	rm -rf $(BUILDPATH) $(STATIC_LIBS)
+	rm -rf $(BUILDPATH) $(STATIC_LIBS) $(ADDITIONAL_CLEAN_OBJECTS)
