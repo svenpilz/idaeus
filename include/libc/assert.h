@@ -3,7 +3,7 @@
 
 #include "stdio.h"
 
-#define assert(expression) if (!expression) { \
+#define assert(expression) if (!(expression)) { \
 	printf("[DEBUG] Assertion \"%s\" failed in %s:%u!\n", #expression, __FILE__, __LINE__); \
 }
 
