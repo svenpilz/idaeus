@@ -1,6 +1,6 @@
 BASE = ../..
 NAME = test-libc++
-COMPILATION_UNITS = shared_ptr
+COMPILATION_UNITS = shared_ptr vector
 LIBS = c++
 COMPILE_FOR_LOCAL_UNIT_TEST = 1
 include $(BASE)/configuration-executable.mk

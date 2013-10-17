@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdio>
+#include <cassert>
 
 namespace std {
 

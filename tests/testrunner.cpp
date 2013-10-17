@@ -10,6 +10,8 @@ int main( int argc, char **argv) {
 	runner.addTest(LibBitmapTest::suite());
 	runner.addTest(LibIdaeusBaseStringTest::suite());
 	runner.addTest(LibCxxSharedPtrTest::suite());
+	runner.addTest(LibCxxSharedPtrTest::suite());
+	runner.addTest(LibCxxVectorTest::suite());
 	
 	runner.run();
 	return 0;
