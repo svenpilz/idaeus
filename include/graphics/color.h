@@ -42,6 +42,8 @@ static const uint32_t GRAPHICS_COLOR_COMPONENT_OFFSET_ALPHA = 24;
 static const color_t GRAPHICS_COLOR_RED = 0xff;
 static const color_t GRAPHICS_COLOR_GREEN = 0xff00;
 static const color_t GRAPHICS_COLOR_BLUE = 0xff0000;
+static const color_t GRAPHICS_COLOR_WHITE = 0xffffff;
+static const color_t GRAPHICS_COLOR_BLACK = 0x000000;
 
 /**
  * Extract the red color compoment of @ref color_t.

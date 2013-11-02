@@ -1,6 +1,6 @@
 BASE = ../..
 NAME = kernel
-COMPILATION_UNITS = main syscall error_handler clock memory scheduler
+COMPILATION_UNITS = font main syscall error_handler clock memory scheduler 
 LIBS = bitmap graphics c arm-eabi
 DEPENDENCY = arch/arm platform/bcm2835
 include $(BASE)/configuration-executable.mk

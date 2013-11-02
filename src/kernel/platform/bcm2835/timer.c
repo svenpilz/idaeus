@@ -38,7 +38,8 @@ void print_register() {
 }
 
 void print_int_register() {
-	printf("basic_pending=0x%x, irq1_pending=0x%x, irq2_pending=0x%x, fiq_control=0x%x, irq1_enable=0x%x, irq2_enable=0x%x, basic_irq_enable=0x%x\n",
+	printf("bcm2835 timer: basic_pending=0x%x, irq1_pending=0x%x, irq2_pending=0x%x, fiq_control=0x%x,\n"
+		"               irq1_enable=0x%x, irq2_enable=0x%x, basic_irq_enable=0x%x\n",
 		*((uint32_t*)(0x2000B000 + 0x200)), 
 		*((uint32_t*)(0x2000B000 + 0x204)),
 		*((uint32_t*)(0x2000B000 + 0x208)),
@@ -110,6 +111,9 @@ int timer_channel_set_event_handler(uint channel, timer_event_handler_t handler)
 	event_handler[channel] = handler;
 	CONTROL_REGISTER = 1 << channel;
 	arm_enable_fiq();
+	
+	print_register();
+	print_int_register();
 	
 	return 0;
 }

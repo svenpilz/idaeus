@@ -46,6 +46,10 @@ int bcm2835_framebuffer_init(uint32_t width, uint32_t height, uint32_t depth) {
 	return 0;
 }
 
+uint32_t* bcm2835_framebuffer_gpu_pointer() {
+	return hardware_framebuffer.gpu_pointer;
+}
+
 int bcm2835_framebuffer_draw(const kernel_framebuffer_t* image) {
 	if (image->height != hardware_framebuffer.virtual_height || 
 		image->width != hardware_framebuffer.virtual_width || 

@@ -19,5 +19,6 @@ typedef struct {
 
 int bcm2835_framebuffer_init(uint32_t width, uint32_t height, uint32_t depth);
 int bcm2835_framebuffer_draw(const kernel_framebuffer_t* image);
+uint32_t* bcm2835_framebuffer_gpu_pointer();
 
 #endif

@@ -15,7 +15,7 @@
 	stmdb sp!, {r0-lr}^  @ save user registers
 	mrs r0, spsr
 	push {r0}
-	vpush {d0-d15}       @ save fpu registers
+	@vpush {d0-d15}       @ save fpu registers
 .endm
 
 .macro CALL_HANDLER
@@ -25,7 +25,7 @@
 
 .macro RESTORE_REGISTER_SET
 	mov sp, r0        @ context to restore
-	vpop {d0-d15}     @ restore fpu registers
+	@vpop {d0-d15}     @ restore fpu registers
 	pop {r0}          @ restore user register
 	msr spsr_cxsf, r0
 	ldm sp!, {r0-lr}^ 

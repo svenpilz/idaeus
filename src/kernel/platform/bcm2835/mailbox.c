@@ -52,13 +52,13 @@ int mailbox_read(uint8_t mailbox, uint32_t* mail) {
 	uint32_t* read = (uint32_t*)MAILBOX_READ_ADDRESS;
 	uint32_t* status = (uint32_t*)MAILBOX_STATUS_ADDRESS;
 	
-	//do {
+	do {
 		//while ((*status & 0x40000000) == 0) {
 	
 		//}
 	
 		*mail = *read;
-	//} while ((*mail & 0xF) != mailbox);
+	} while ((*mail & 0xF) != mailbox);
 	
 	*mail &= 0xFFFFFFF0;
 	return 0;
