@@ -1,4 +1,4 @@
 .section .rodata
 .global _font
 _font:
-.incbin "font"
+.incbin "../../build/contrib/font"

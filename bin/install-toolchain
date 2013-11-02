@@ -2,12 +2,13 @@
 
 NPROCS=`grep -c ^processor /proc/cpuinfo`
 DOWNLOAD="wget -q"
-BUILD_DIR_TOOLCHAIN="build/toolchain"
+BUILD_DIR_TOOLCHAIN="`pwd`/build/toolchain"
 BIN_DIR_TOOLCHAIN="`pwd`/bin/toolchain"
 
-CROSS_GCC_VESION="4.8.1"
-CROSS_BINUTILS_VERSION="2.23.52"
+CROSS_GCC_VESION="4.8.2"
+CROSS_BINUTILS_VERSION="2.24.51"
 CROSS_GDB_VERSION="7.6"
+UNIFONT_VERSION="6.3.20131020"
 
 if [ "$1" = "clean" -o ! -d "$BUILD_DIR_TOOLCHAIN" ]; then
 	#
@@ -22,15 +23,17 @@ if [ "$1" = "clean" -o ! -d "$BUILD_DIR_TOOLCHAIN" ]; then
 	#
 	echo "Download toolchain ..."
 	cd $BUILD_DIR_TOOLCHAIN
-	$DOWNLOAD https://github.com/Torlus/qemu/archive/rpi.zip
+	$DOWNLOAD https://github.com/svenpilz/qemu/archive/rpi.zip
 	$DOWNLOAD ftp://sourceware.org/pub/binutils/snapshots/binutils-$CROSS_BINUTILS_VERSION.tar.bz2
 	$DOWNLOAD http://ftp.gnu.org/gnu/gcc/gcc-$CROSS_GCC_VESION/gcc-$CROSS_GCC_VESION.tar.bz2
 	$DOWNLOAD http://ftp.gnu.org/gnu/gdb/gdb-$CROSS_GDB_VERSION.tar.gz
+	$DOWNLOAD http://unifoundry.com/pub/unifont-$UNIFONT_VERSION/font-builds/unifontall-$UNIFONT_VERSION.hex.gz
 
 	unzip -qo rpi.zip
 	tar xjf binutils-$CROSS_BINUTILS_VERSION.tar.bz2
 	tar xjf gcc-$CROSS_GCC_VESION.tar.bz2
 	tar xzf gdb-$CROSS_GDB_VERSION.tar.gz
+	gunzip unifontall-$UNIFONT_VERSION.hex.gz
 else
 	cd $BUILD_DIR_TOOLCHAIN
 fi
@@ -84,4 +87,12 @@ cd gdb-$CROSS_GDB_VERSION/build
 make -j$NPROCS > /dev/null
 make install > /dev/null
 cd ../..
+
+#
+# Build and install convert-font from src/bin and the font file
+#
+gcc -o $BIN_DIR_TOOLCHAIN/convert-font ../../src/bin/convert-font/convert-font.c
+mkdir -p ../contrib
+grep --after-context=94 "0020:" unifontall-$UNIFONT_VERSION.hex > unifontascii-$UNIFONT_VERSION.hex
+$BIN_DIR_TOOLCHAIN/convert-font < unifontascii-$UNIFONT_VERSION.hex > ../contrib/font
 
